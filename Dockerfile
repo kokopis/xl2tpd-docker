@@ -16,6 +16,10 @@ FROM amazonlinux:2023 AS run
 # install libpcap
 RUN ["dnf", "install", "-y", "libpcap-1.10.1-1.amzn2023.0.2.aarch64"]
 
+# upgrade before running anything on the internet
+RUN ["dnf", "update"]
+RUN ["dnf", "upgrade", "--exclude=libpcap", "-y"]
+
 # install xl2tpd artifacts
 COPY --from=build --chown=root:root --chmod=0755 /usr/local/sbin/xl2tpd         /usr/local/sbin/xl2tpd
 COPY --from=build --chown=root:root --chmod=0755 /usr/local/bin/pfc             /usr/local/bin/pfc
